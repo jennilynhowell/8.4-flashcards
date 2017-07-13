@@ -1,0 +1,8 @@
+{
+  "development": {
+    "mongoUrl": "mongodb://localhost:27017/flashcards"
+  },
+  "test": {
+    "mongoUrl": "mongodb://localhost:27017/flashcards_test"
+  }
+}
