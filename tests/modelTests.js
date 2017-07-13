@@ -105,8 +105,6 @@ describe('user model endpoint tests', () => {
 });
 
 
-
-
 //sanity testing
 describe('sanity testing: models', () => {
   it('sanity test', (done) => {

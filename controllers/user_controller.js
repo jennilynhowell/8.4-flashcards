@@ -1,22 +1,20 @@
 const User = require('../models/user');
-const helpers = require('./helpers')
+const createPasswordObject = require('./helpers').createPasswordObject;
 
 module.exports = {
   createUser: (req, res) => {
-    console.log('HELLO');
-    console.log(req.body.username);
-    if(req.body.password){ console.log('I ALSO HAVE A PW'); };
     let username = req.body.username
       , password = req.body.password
-      // , passwordObj = helpers.createPasswordObject(password);
+      , passwordObj = createPasswordObject(password);
 
     console.log('HELLO I HAVE A USER IT IS: ', username);
+    if(password){ console.log('I ALSO HAVE A PW'); };
     console.log(passwordObj);
+
     let newUser = new User({
       username: user,
       password: passwordObj
     });
-    console.log(newUser);
 
     newUser.save().then(user => {
       console.log('from app: ', user);
