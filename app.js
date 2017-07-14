@@ -5,6 +5,7 @@ const express = require('express');
 const app = express();
 const bodyParser = require('body-parser');
 const path = require('path');
+const validator = require('express-validator');
 
 const userControl = require('./controllers/user_controller.js');
 const cardControl = require('./controllers/card_controller.js')
@@ -17,6 +18,8 @@ mongoose.connect(mongoUrl);
 
 app.use(bodyParser.json());
 app.use('/static', express.static('public'));
+app.use(bodyParser.urlencoded({ extended: false }));
+app.use(validator());
 
 //==========static file
 app.get('/', (req, res) => {
@@ -24,6 +27,8 @@ app.get('/', (req, res) => {
 });
 
 //==========user controllers
+app.get('/api/user', userControl.viewUsers);
+
 app.post('/api/user', userControl.createUser);
 
 app.post('/api/user/login', userControl.login);
