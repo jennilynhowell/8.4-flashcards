@@ -66,7 +66,6 @@ describe('card model endpoint tests', () => {
       }).end(done);
   });
 
-  //this is probably not feasible as we need to use the CARD id
   it('can DELETE a card at /api/card/:id/delete', (done) => {
     let myCard = new Card({userId: "54cd6669d3e0fb1b302e54e6", question: 'Cutest puppy?', answer: 'Luke', category: 'Dogs'}).save().then(card => {
       request(app)
@@ -122,19 +121,21 @@ describe('user model endpoint tests', () => {
   //   });
   // });
 
-  //FIX THIS... getting error: "Pass phrase must be a buffer"
-  // it('will login if valid user + pw at GET /api/user/:id', (done) => {
-  //   let newUser = new User({username: 'bunnies', password: createPasswordObject('cute')}).save().then(user => {
-  //     request(app)
-  //       .get('/api/user/' + user._id)
-  //       .expect(200)
-  //       .expect(res => {
-  //         console.log(res.body);
-  //         expect(res.body.data.username).to.equal('bunnies');
-  //       }).end(done);
-  //   });
-  //
-  // });
+  it('will confirm valid user + pw at POST /api/user/login', (done) => {
+    let username = 'bunnies'
+      , password = 'cute'
+      , hashPassword = createPasswordObject('cute');
+
+    let newUser = new User({username: username, password: hashPassword}).save().then(user => {
+      request(app)
+        .post('/api/user/login')
+        .send({username: username, password: password})
+        .expect(200)
+        .expect(res => {
+          expect(res.body.data.username).to.equal('bunnies');
+        }).end(done);
+    });
+  });
 
 
   it('can create password object from string', (done) => {

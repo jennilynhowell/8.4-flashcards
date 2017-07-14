@@ -66,7 +66,6 @@ module.exports = {
   viewOneCard: (req, res) => {
     let _id = req.params.id;
     Card.findById(_id).then(card => {
-      console.log(card);
       if (!card){
         res.status(500).json({message: 'Error'});
       } else {

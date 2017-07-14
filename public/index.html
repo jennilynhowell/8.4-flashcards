@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>Flashcards</title>
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.99.0/css/materialize.min.css">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  </head>
+  <body>
+
+  <nav>
+    <div class="nav-wrapper cyan lighten-2">
+      <a href="#" class="brand-logo"><i class="material-icons">dashboard</i>Flashcards</a>
+      <ul id="nav-mobile" class="right hide-on-med-and-down">
+        <li><a href="/">Login</a></li>
+        <li><a href="/collections">View my Collections</a></li>
+      </ul>
+    </div>
+  </nav>
+
+  <div class="row">
+    <form class="col s6">
+      <fieldset>
+        <legend>Sign Up for Flashcards</legend>
+        <div class="row">
+          <div class="input-field col s6">
+            <input id="first_name" type="text" class="validate">
+            <label for="first_name">First Name</label>
+          </div>
+          <div class="input-field col s6">
+            <input id="last_name" type="text" class="validate">
+            <label for="last_name">Last Name</label>
+          </div>
+        </div>
+        <div class="row">
+          <div class="input-field col s6">
+            <input id="password" type="password" class="validate">
+            <label for="password">Password</label>
+          </div>
+          <div class="input-field col s6">
+            <input id="passwordConf" type="password" class="validate">
+            <label for="password">Confirm Password</label>
+          </div>
+          <div class="input-field col s6">
+            <a id= "submit" class="cyan waves-effect waves-light btn" type="submit"><i class="material-icons right">call_made</i>Submit!</a>
+          </div>
+        </div>
+      </fieldset>
+    </form>
+
+  <script type="text/javascript" src="https://code.jquery.com/jquery-2.1.1.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.99.0/js/materialize.min.js"></script>
+  </body>
+</html>

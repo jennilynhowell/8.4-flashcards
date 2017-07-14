@@ -4,21 +4,28 @@ const crypto = require('crypto');
 const express = require('express');
 const app = express();
 const bodyParser = require('body-parser');
+const path = require('path');
+
 const userControl = require('./controllers/user_controller.js');
 const cardControl = require('./controllers/card_controller.js')
 const User = require('./models/user');
 const Card = require('./models/card');
 
-const env = process.env.NODE_ENV || development;
+const env = process.env.NODE_ENV || 'development';
 const mongoUrl = require('./config.json')[env].mongoUrl;
 mongoose.connect(mongoUrl);
 
 app.use(bodyParser.json());
 
+//==========static files
+app.get('/', (req, res) => {
+  res.sendFile(path.join(__dirname, 'public', 'index.html'));
+});
+
 //==========user controllers
 app.post('/api/user', userControl.createUser);
 
-app.get('/api/user/:id', userControl.login);
+app.post('/api/user/login', userControl.login);
 
 //==========flashcard controllers
 app.get('/api/card', cardControl.viewCards);
@@ -35,3 +42,5 @@ app.delete('/api/card/:id/delete', cardControl.deleteCard);
 
 
 module.exports = app;
+
+app.listen(3000);

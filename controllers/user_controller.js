@@ -22,13 +22,12 @@ module.exports = {
   },
 
   login: (req, res) => {
-    let _id = req.params.id;
-    let typedPassword = req.body.password;
-    User.findById(_id).then(user => {
-      console.log(user);
+    let username = req.body.username
+      , password = req.body.password;
+
+    User.findOne({username: username}).then(user => {
       let pwObject = user.password;
-      let newPwObject = createPasswordObject(typedPassword, pwObject.salt);
-      console.log('new: ', newPwObject);
+      let newPwObject = createPasswordObject(password, pwObject.salt);
 
       if (!user || pwObject.hash !== newPwObject.hash){
         res.status(403).json({message: 'Login error, please try again.'});
