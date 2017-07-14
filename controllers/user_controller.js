@@ -13,12 +13,18 @@ module.exports = {
   },
 
   createUser: (req, res) => {
+    //good notes about express-validator at https://booker.codes/input-validation-in-express-with-express-validator/
+
     req.checkBody('username', 'Ooops, there was an error. Please try again');
     req.checkBody('password', 'Ooops, there was an error. Please try again');
-    req.checkBody('passwordConf', 'Ooops, there was an error. Please try again').matches(req.body.password);
+    req.checkBody('passwordConf', 'Ooops, there was an error. Please try again').equals(req.body.password);
+
+    //handle any validation errors
     let valErrors = req.validationErrors();
     if (valErrors) {
       res.send(valErrors);
+      return;
+
     } else {
       let username = req.body.username
         , password = req.body.password
