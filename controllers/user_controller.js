@@ -21,14 +21,20 @@ module.exports = {
     });
   },
 
-  login: (username, password) => {
-    return User.findOne({username: username}).then(user => {
-      if(!user){
-        return false;
-      };
+  login: (req, res) => {
+    let _id = req.params.id;
+    let typedPassword = req.body.password;
+    User.findById(_id).then(user => {
+      console.log(user);
       let pwObject = user.password;
-      let newPwObject = helpers.createPasswordObject(password, pwObject.salt);
-      return pwObject.hash === newPwObject.hash;
+      let newPwObject = createPasswordObject(typedPassword, pwObject.salt);
+      console.log('new: ', newPwObject);
+
+      if (!user || pwObject.hash !== newPwObject.hash){
+        res.status(403).json({message: 'Login error, please try again.'});
+      } else if (user && pwObject.hash === newPwObject.hash ){
+        res.status(200).json({message: 'Success', data: user});
+      };
     });
   }
 

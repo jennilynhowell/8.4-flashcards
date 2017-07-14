@@ -10,17 +10,67 @@ const createPasswordObject = require('../controllers/helpers').createPasswordObj
 describe('card model endpoint tests', () => {
 
   beforeEach((done) => {
-    Card.deleteMany({}).then(() => {done()});
+    let myCard = new Card({userId: "54cd6669d3e0fb1b302e55e6", question: 'Best frozen treat?', answer: 'custard', category: 'Treats'});
+    let myCard2 = new Card({userId: "54cd6669d3e0fb1b302e55f7", question: 'Best doughnut shop?', answer: 'Glazed Charleston', category: 'Treats'});
+    let myCard3 = new Card({userId: "54cd6669d3e0fb1b302e55g8", question: 'T/F: Programming is fun', answer: 'TRUE!', category: 'Programming'});
+    Card.insertMany([myCard, myCard2, myCard3]).then(() => {done()});
   });
 
   afterEach((done) => {
     Card.deleteMany({}).then(() => {done()});
   });
 
-  it('can DELETE a card at /api/card/:id/delete', (done) => {
-    let myCard = new Card({userId: "54cd6669d3e0fb1b302e54e6", question: 'Cutest puppy?', answer: 'Luke', category: 'Dogs'}).save().then(cat => {
+  it('can GET one card at /api/card/:id', (done) => {
+    let myCard = new Card({userId: "54cd6669d3e0fb1b302e54e6", question: 'Cutest puppy?', answer: 'Luke', category: 'Dogs'}).save().then(card => {
       request(app)
-        .delete('/api/card/' + myCard._userId + '/delete')
+        .get('/api/card/' + card._id)
+        .expect(200)
+        .expect(res => {
+          expect(res.body.data.answer).to.equal('Luke');
+        }).end(done);
+      });
+  });
+
+  //can't get card data to pass through promise??
+  it('can PATCH a card at /api/card/:id', (done) => {
+    let myCard = new Card({userId: "54cd6669d3e0fb1b302e54e6", question: 'Cutest puppy?', answer: 'Luke', category: 'Dogs'}).save().then(card => {
+      request(app)
+        .patch('/api/card/' + card._id)
+        .send({question: 'Best puppy?'})
+        .expect(200)
+        .expect(res => {
+          console.log(res.body);
+          expect(res.body.message).to.equal('Success');
+        }).end(done);
+      });
+  });
+
+  it('can GET all cards by category at /api/card/category', (done) => {
+    request(app)
+      .get('/api/card/category')
+      .send({category: 'Treats'})
+      .expect(200)
+      .expect(res => {
+        expect(res.body.data[0].category).to.equal('Treats');
+        expect(res.body.data[1].question).to.equal('Best doughnut shop?');
+      }).end(done);
+  });
+
+  it('can GET all cards at /api/card', (done) => {
+    request(app)
+      .get('/api/card')
+      .expect(200)
+      .expect(res => {
+        expect(res.body.data[2].answer).to.equal('TRUE!');
+        expect(res.body.data[0].category).to.equal('Treats');
+      }).end(done);
+  });
+
+  //this is probably not feasible as we need to use the CARD id
+  it('can DELETE a card at /api/card/:id/delete', (done) => {
+    let myCard = new Card({userId: "54cd6669d3e0fb1b302e54e6", question: 'Cutest puppy?', answer: 'Luke', category: 'Dogs'}).save().then(card => {
+      request(app)
+        .delete('/api/card/' + card._id + '/delete')
         .expect(200)
         .expect(res => {
           expect(res.body.message).to.equal('Success');
@@ -71,16 +121,20 @@ describe('user model endpoint tests', () => {
   //     });
   //   });
   // });
-  //
-  // it('will login if valid user + pw', (done) => {
-  //   createUser('bunnies', 'cute').then(user => {
-  //     login('bunnies', 'cute').then(result => {
-  //       expect(result).to.equal(true);
-  //       done();
-  //     });
+
+  //FIX THIS... getting error: "Pass phrase must be a buffer"
+  // it('will login if valid user + pw at GET /api/user/:id', (done) => {
+  //   let newUser = new User({username: 'bunnies', password: createPasswordObject('cute')}).save().then(user => {
+  //     request(app)
+  //       .get('/api/user/' + user._id)
+  //       .expect(200)
+  //       .expect(res => {
+  //         console.log(res.body);
+  //         expect(res.body.data.username).to.equal('bunnies');
+  //       }).end(done);
   //   });
-  // });
   //
+  // });
 
 
   it('can create password object from string', (done) => {

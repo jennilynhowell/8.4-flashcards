@@ -21,16 +21,17 @@ app.post('/api/user', userControl.createUser);
 app.get('/api/user/:id', userControl.login);
 
 //==========flashcard controllers
+app.get('/api/card', cardControl.viewCards);
+
+app.get('/api/card/category', cardControl.viewCardsByCategory);
+
+app.get('/api/card/:id', cardControl.viewOneCard);
+
 app.post('/api/card', cardControl.createCard);
+
+app.patch('/api/card/:id', cardControl.patchCard);
 
 app.delete('/api/card/:id/delete', cardControl.deleteCard);
 
-// module.exports = {
-//   deleteCard: deleteCard,
-//   createCard: createCard,
-//   login: login,
-//   createPasswordObject: createPasswordObject,
-//   createUser: createUser
-// };
 
 module.exports = app;
