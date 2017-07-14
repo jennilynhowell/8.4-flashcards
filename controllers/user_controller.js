@@ -7,17 +7,12 @@ module.exports = {
       , password = req.body.password
       , passwordObj = createPasswordObject(password);
 
-    console.log('HELLO I HAVE A USER IT IS: ', username);
-    if(password){ console.log('I ALSO HAVE A PW'); };
-    console.log(passwordObj);
-
     let newUser = new User({
-      username: user,
+      username: username,
       password: passwordObj
     });
 
     newUser.save().then(user => {
-      console.log('from app: ', user);
       if (user.err){
         res.status(500).json({message: 'Error'});
       } else {

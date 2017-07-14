@@ -3,6 +3,7 @@ const User = require('../models/user');
 const Card = require('../models/card');
 const request = require('supertest');
 const app = require('../app');
+const createPasswordObject = require('../controllers/helpers').createPasswordObject;
 
 
 //card model
@@ -33,7 +34,7 @@ describe('card model endpoint tests', () => {
       .post('/api/card')
       .send({userId: "54cd6669d3e0fb1b302e54e6", question: 'Cutest puppy?', answer: 'Luke', category: 'Dogs'})
       .expect(res => {
-        expect(201)
+        expect(201);
         expect(res.body.message).to.equal('Success');
         expect(res.body.data.answer).to.equal('Luke');
       }).end(done);
@@ -80,14 +81,15 @@ describe('user model endpoint tests', () => {
   //   });
   // });
   //
-  //
-  // it('can create password object from string', (done) => {
-  //   let pwObject = createPasswordObject('password', 'a');
-  //   let expectedPwObject = {iterations: 100, salt: 'a', hash: 'pXN2J2eBnwuoYVeJYCTw0PYUnG8qxBl48AnMa94Q8tPxVnH9adPS/Upk314EdPVLk9NGEsET5/5eO0L8KEAIZAZblXsjN/nY0lGeu6dQlu+qagQLtk3jTChiYLQ32w+bPoXEQeMAreJLtqNNLeaT2SY7y4Q8/uU1JGdcDKpXWrR/ZQ8iKEpJ0DKY8BKZEoWk1vYGbLQt6miO8y+zRSzQyN1YRZNkw4XF0AA7stxaRYD/MlL7bcP8rYYHGxVM5dQpsFK3amD4ObCkixeFe982W6JQYD22PpQ3dt2QAzovMFAVgCyxYfMg4FK+cHcSBIzoriIsMUCjO0I2NPyOUesOog=='};
-  //   expect(pwObject).to.not.equal(null);
-  //   expect(pwObject).to.deep.equal(expectedPwObject);
-  //   done();
-  // });
+
+
+  it('can create password object from string', (done) => {
+    let pwObject = createPasswordObject('password', 'a');
+    let expectedPwObject = {iterations: 100, salt: 'a', hash: 'pXN2J2eBnwuoYVeJYCTw0PYUnG8qxBl48AnMa94Q8tPxVnH9adPS/Upk314EdPVLk9NGEsET5/5eO0L8KEAIZAZblXsjN/nY0lGeu6dQlu+qagQLtk3jTChiYLQ32w+bPoXEQeMAreJLtqNNLeaT2SY7y4Q8/uU1JGdcDKpXWrR/ZQ8iKEpJ0DKY8BKZEoWk1vYGbLQt6miO8y+zRSzQyN1YRZNkw4XF0AA7stxaRYD/MlL7bcP8rYYHGxVM5dQpsFK3amD4ObCkixeFe982W6JQYD22PpQ3dt2QAzovMFAVgCyxYfMg4FK+cHcSBIzoriIsMUCjO0I2NPyOUesOog=='};
+    expect(pwObject).to.not.equal(null);
+    expect(pwObject).to.deep.equal(expectedPwObject);
+    done();
+  });
 
   it('can POST a new user with pw object at /api/user', (done) => {
     request(app)
@@ -95,9 +97,8 @@ describe('user model endpoint tests', () => {
       .send({username: 'luke', password: 'puppy'})
       .expect(201)
       .expect(res => {
-        console.log(res.body);
-        expect(res.body.username).to.equal('luke');
-        expect(res.body.password.hash.length).to.equal(344);
+        expect(res.body.data.username).to.equal('luke');
+        expect(res.body.data.password.hash.length).to.equal(344);
       }).end(done);
 
   });

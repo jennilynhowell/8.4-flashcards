@@ -1,3 +1,5 @@
+const crypto = require('crypto');
+
 module.exports = {
   createPasswordObject: (password, salt='') => {
     salt = salt || crypto.randomBytes(Math.ceil(32 * 3 / 4)).toString('base64').slice(0, 8);
@@ -9,4 +11,4 @@ module.exports = {
 
     return {iterations: iterations, salt: salt, hash: hashString};
   }
-}
+};
