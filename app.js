@@ -16,10 +16,11 @@ const mongoUrl = require('./config.json')[env].mongoUrl;
 mongoose.connect(mongoUrl);
 
 app.use(bodyParser.json());
+app.use('/static', express.static('public'));
 
-//==========static files
+//==========static file
 app.get('/', (req, res) => {
-  res.sendFile(path.join(__dirname, 'public', 'index.html'));
+  res.sendFile(path.join(__dirname, '/public', 'index.html'));
 });
 
 //==========user controllers
