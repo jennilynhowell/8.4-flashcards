@@ -1,28 +1,17 @@
-<!DOCTYPE html>
-<html>
-  <head>
-    <meta charset="utf-8">
-    <title>Flashcards</title>
-    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.99.0/css/materialize.min.css">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  </head>
-  <body>
-
-  <nav>
-    <div class="nav-wrapper cyan lighten-2">
-      <a href="#" class="brand-logo"><i class="material-icons">dashboard</i>Flashcards</a>
-      <ul id="nav-mobile" class="right hide-on-med-and-down">
-        <li><a href="/">Login</a></li>
-        <li><a href="/collections">View my Collections</a></li>
-      </ul>
-    </div>
-  </nav>
 
   <div class="row">
-    <form class="col s6 signupForm" action="/" method="POST">
+    <form class="col s6 signupForm" action="/user" method="POST">
       <fieldset>
         <legend>Sign Up for Flashcards</legend>
+
+        {{#valErrors}}
+          <h5>{{.}}</h5>
+        {{/valErrors}}
+
+        {{#message}}
+        <h5>{{.}}</h5>
+        {{/message}}
+
         <div class="row">
           <div class="input-field col s12" id="errorDiv"></div>
           <div class="input-field col s12">
@@ -43,9 +32,4 @@
         </div>
       </fieldset>
     </form>
-
-  <script type="text/javascript" src="https://code.jquery.com/jquery-2.1.1.min.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.99.0/js/materialize.min.js"></script>
-  <script type="text/javascript" src="/static/main.js" charset="utf-8"></script>
-  </body>
-</html>
+  </div>

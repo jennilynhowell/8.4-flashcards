@@ -1,0 +1,30 @@
+<div class="row">
+  <form class="col s6 signupForm" action="/user" method="POST">
+    <fieldset>
+      <legend>Sign In to my Flashcards</legend>
+
+      {{#valErrors}}
+      <h5>{{.}}</h5>
+      {{/valErrors}}
+
+      {{#message}}
+      <h5>{{.}}</h5>
+      {{/message}}
+
+      <div class="row">
+        <div class="input-field col s12" id="errorDiv"></div>
+        <div class="input-field col s12">
+          <input id="username" type="text" class="validate" name="username" required>
+          <label for="username">Username</label>
+        </div>
+        <div class="input-field col s12">
+          <input id="password" type="password" class="validate" name="password" required>
+          <label for="password">Password</label>
+        </div>
+        <div class="input-field col s12">
+          <button id= "signupSubmit" class="cyan waves-effect waves-light btn" type="submit"><i class="material-icons right">call_made</i>Go!</button>
+        </div>
+      </div>
+    </fieldset>
+  </form>
+</div>

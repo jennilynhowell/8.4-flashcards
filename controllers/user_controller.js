@@ -22,7 +22,7 @@ module.exports = {
     //handle any validation errors
     let valErrors = req.validationErrors();
     if (valErrors) {
-      res.send(valErrors);
+      res.render('index', {valErrors: valErrors});
       return;
 
     } else {
@@ -37,9 +37,11 @@ module.exports = {
 
       newUser.save().then(user => {
         if (user.err){
-          res.status(500).json({message: 'Error'});
+          res.render('index', {message: 'Error'});
         } else {
-          res.status(200).json({message: 'Success', data: user});
+          res.session.user = user._id;
+          res.session.name = user.username;
+          res.render('collections', {data: user});
         };
       });
     };
@@ -47,19 +49,32 @@ module.exports = {
   },
 
   login: (req, res) => {
-    let username = req.body.username
-      , password = req.body.password;
+    req.checkBody('username', 'Ooops, there was an error. Please try again');
+    req.checkBody('password', 'Ooops, there was an error. Please try again');
 
-    User.findOne({username: username}).then(user => {
-      let pwObject = user.password;
-      let newPwObject = createPasswordObject(password, pwObject.salt);
+    //handle any validation errors
+    let valErrors = req.validationErrors();
+    if (valErrors) {
+      res.render('login', {valErrors: valErrors});
+      return;
 
-      if (!user || pwObject.hash !== newPwObject.hash){
-        res.status(403).json({message: 'Login error, please try again.'});
-      } else if (user && pwObject.hash === newPwObject.hash ){
-        res.status(200).json({message: 'Success', data: user});
-      };
-    });
+    } else {
+      let username = req.body.username
+        , password = req.body.password;
+
+      User.findOne({username: username}).then(user => {
+        let pwObject = user.password;
+        let newPwObject = createPasswordObject(password, pwObject.salt);
+
+        if (!user || pwObject.hash !== newPwObject.hash){
+          res.render('login', {message: 'Login error, please try again.'});
+        } else if (user && pwObject.hash === newPwObject.hash ){
+          res.render('collections', {data: user});
+        };
+      });
+    }
+
+
   }
 
 

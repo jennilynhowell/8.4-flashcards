@@ -6,6 +6,7 @@ const app = express();
 const bodyParser = require('body-parser');
 const path = require('path');
 const validator = require('express-validator');
+const mustache = require('mustache-express');
 
 const userControl = require('./controllers/user_controller.js');
 const cardControl = require('./controllers/card_controller.js')
@@ -16,16 +17,30 @@ const env = process.env.NODE_ENV || 'development';
 const mongoUrl = require('./config.json')[env].mongoUrl;
 mongoose.connect(mongoUrl);
 
+app.engine('mustache', mustache());
+app.set('view engine', 'mustache');
+app.set('views', path.join(__dirname, 'views'));
+app.set('layout', 'layout');
 app.use(bodyParser.json());
 app.use('/static', express.static('public'));
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(validator());
 
+app.get('/', (req, res) => {
+  res.redirect('/user/signup')
+});
+
 //==========user controllers
 app.get('/user', userControl.viewUsers);
 
-app.post('/user', userControl.createUser);
+app.get('/user/signup', (req, res) => {
+  res.render('index', {});
+});
+app.post('/user/signup', userControl.createUser);
 
+app.get('/user/login', (req, res) => {
+  res.render('login', {});
+});
 app.post('/user/login', userControl.login);
 
 //==========flashcard controllers
