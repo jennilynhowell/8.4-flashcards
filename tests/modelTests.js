@@ -20,10 +20,10 @@ describe('card model endpoint tests', () => {
     Card.deleteMany({}).then(() => {done()});
   });
 
-  it('can GET one card at /api/card/:id', (done) => {
+  it('can GET one card at /card/:id', (done) => {
     let myCard = new Card({userId: "54cd6669d3e0fb1b302e54e6", question: 'Cutest puppy?', answer: 'Luke', category: 'Dogs'}).save().then(card => {
       request(app)
-        .get('/api/card/' + card._id)
+        .get('/card/' + card._id)
         .expect(200)
         .expect(res => {
           expect(res.body.data.answer).to.equal('Luke');
@@ -32,10 +32,10 @@ describe('card model endpoint tests', () => {
   });
 
   //can't get card data to pass through promise??
-  it('can PATCH a card at /api/card/:id', (done) => {
+  it('can PATCH a card at /card/:id', (done) => {
     let myCard = new Card({userId: "54cd6669d3e0fb1b302e54e6", question: 'Cutest puppy?', answer: 'Luke', category: 'Dogs'}).save().then(card => {
       request(app)
-        .patch('/api/card/' + card._id)
+        .patch('/card/' + card._id)
         .send({question: 'Best puppy?'})
         .expect(200)
         .expect(res => {
@@ -45,9 +45,9 @@ describe('card model endpoint tests', () => {
       });
   });
 
-  it('can GET all cards by category at /api/card/category', (done) => {
+  it('can GET all cards by category at /card/category', (done) => {
     request(app)
-      .get('/api/card/category')
+      .get('/card/category')
       .send({category: 'Treats'})
       .expect(200)
       .expect(res => {
@@ -56,9 +56,9 @@ describe('card model endpoint tests', () => {
       }).end(done);
   });
 
-  it('can GET all cards at /api/card', (done) => {
+  it('can GET all cards at /card', (done) => {
     request(app)
-      .get('/api/card')
+      .get('/card')
       .expect(200)
       .expect(res => {
         expect(res.body.data[2].answer).to.equal('TRUE!');
@@ -66,10 +66,10 @@ describe('card model endpoint tests', () => {
       }).end(done);
   });
 
-  it('can DELETE a card at /api/card/:id/delete', (done) => {
+  it('can DELETE a card at /card/:id/delete', (done) => {
     let myCard = new Card({userId: "54cd6669d3e0fb1b302e54e6", question: 'Cutest puppy?', answer: 'Luke', category: 'Dogs'}).save().then(card => {
       request(app)
-        .delete('/api/card/' + card._id + '/delete')
+        .delete('/card/' + card._id + '/delete')
         .expect(200)
         .expect(res => {
           expect(res.body.message).to.equal('Success');
@@ -78,9 +78,9 @@ describe('card model endpoint tests', () => {
 
   });
 
-  it('can create card at POST /api/card', (done) => {
+  it('can create card at POST /card', (done) => {
     request(app)
-      .post('/api/card')
+      .post('/card')
       .send({userId: "54cd6669d3e0fb1b302e54e6", question: 'Cutest puppy?', answer: 'Luke', category: 'Dogs'})
       .expect(res => {
         expect(201);
@@ -103,32 +103,14 @@ describe('user model endpoint tests', () => {
     User.deleteMany({}).then(() => {done()});
   });
 
-  // it('will not login if invalid pw', (done) => {
-  //   createUser('bunnies', 'cute').then(user => {
-  //     login('bunnies', 'fluffy').then(result => {
-  //       expect(result).to.equal(false);
-  //       done();
-  //     });
-  //   });
-  // });
-  //
-  // it('will not login if invalid user', (done) => {
-  //   createUser('bunnies', 'cute').then(user => {
-  //     login('puppies', 'cute').then(result => {
-  //       expect(result).to.equal(false);
-  //       done();
-  //     });
-  //   });
-  // });
-
-  it('will confirm valid user + pw at POST /api/user/login', (done) => {
+  it('will confirm valid user + pw at POST /user/login', (done) => {
     let username = 'bunnies'
       , password = 'cute'
       , hashPassword = createPasswordObject('cute');
 
     let newUser = new User({username: username, password: hashPassword}).save().then(user => {
       request(app)
-        .post('/api/user/login')
+        .post('/user/login')
         .send({username: username, password: password})
         .expect(200)
         .expect(res => {
@@ -146,11 +128,11 @@ describe('user model endpoint tests', () => {
     done();
   });
 
-  it('can POST a new user with pw object at /api/user', (done) => {
+  it('can POST a new user with pw object at /user', (done) => {
     request(app)
-      .post('/api/user')
-      .send({username: 'luke', password: 'puppy'})
-      .expect(201)
+      .post('/user')
+      .send({username: 'luke', password: 'puppy', passwordConf: 'puppy'})
+      .expect(200)
       .expect(res => {
         expect(res.body.data.username).to.equal('luke');
         expect(res.body.data.password.hash.length).to.equal(344);

@@ -39,7 +39,7 @@ module.exports = {
         if (user.err){
           res.status(500).json({message: 'Error'});
         } else {
-          res.status(201).json({message: 'Success', data: user});
+          res.status(200).json({message: 'Success', data: user});
         };
       });
     };
