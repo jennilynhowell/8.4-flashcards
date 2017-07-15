@@ -8,8 +8,7 @@ const path = require('path');
 const validator = require('express-validator');
 const mustache = require('mustache-express');
 const session = require('express-session');
-const passport = require('passport');
-const BasicStrategy = require('passport-http').BasicStrategy;
+
 
 const userControl = require('./controllers/user_controller.js');
 const cardControl = require('./controllers/card_controller.js')
@@ -37,20 +36,6 @@ app.use(session({
   saveUninitialized: true
 }));
 
-//passport set up thanks to docs and https://stackoverflow.com/questions/22052258/what-does-passport-session-middleware-do
-app.use(passport.initialize());
-
-app.use(passport.session());
-
-passport.serializeUser((user, done) => {
-  done(null, user._id);
-});
-
-passport.deserializeUser((id, done) => {
-  User.findById(id, (err, user) => {
-    done(err, user);
-  });
-});
 
 app.get('/', (req, res) => {
   res.redirect('/user/signup')

@@ -23,9 +23,7 @@
     "express-session": "^1.15.3",
     "express-validator": "^3.2.1",
     "mongoose": "^4.10.8",
-    "mustache-express": "^1.2.5",
-    "passport": "^0.3.2",
-    "passport-http": "^0.3.0"
+    "mustache-express": "^1.2.5"
   },
   "devDependencies": {
     "chai": "^4.1.0",

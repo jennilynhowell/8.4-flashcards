@@ -1,4 +1,5 @@
 const User = require('../models/user');
+const Card = require('../models/card');
 const createPasswordObject = require('./helpers').createPasswordObject;
 
 module.exports = {
@@ -12,11 +13,15 @@ module.exports = {
     },
 
     getCollections: (req, res) => {
-      let data = {
+      let userSession = {
         username: req.session.name,
-        userId: req.session._id
-      }
-      res.render('collections', data)
+        userId: req.session.user
+      };
+
+      Card.find({userId: userSession.userId}).then(cards => {
+        res.render('collections', {cards: cards, userSession: userSession});
+      });
+
     }
   },
 
@@ -89,7 +94,7 @@ module.exports = {
         } else if (user && pwObject.hash === newPwObject.hash ){
           req.session.user = user._id;
           req.session.name = user.username;
-          res.redirect('collections');
+          res.redirect('/user/collections');
         };
       });
     }

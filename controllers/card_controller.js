@@ -3,12 +3,11 @@ const Card = require('../models/card');
 module.exports = {
 
   createCard: (req, res) => {
-    let userId = req.session.name;
     let myCard = new Card(req.body).save().then(card => {
       if (card.err){
         res.render('collections', {message: 'Error'});
       } else {
-        res.redirect('collections');
+        res.redirect('/user/collections');
       };
     });
   },
