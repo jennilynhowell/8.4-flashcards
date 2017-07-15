@@ -1,0 +1,57 @@
+<h4>{{username}}'s Collections</h4>
+
+{{#data}}
+
+<form class="col s6" action="/card" method="POST">
+  <fieldset>
+    <legend>Create a New Card</legend>
+    <div class="row">
+      <input type="hidden" name="userId" value="{{userId}}">
+      <div class="input-field col s3">
+        <input type="text" class="validate" name="question" required>
+        <label for="question">Question</label>
+      </div>
+      <div class="input-field col s3">
+        <input type="text" class="validate" name="answer" required>
+        <label for="answer">Answer</label>
+      </div>
+      <div class="input-field col s3">
+        <input type="text" class="validate" name="category" required>
+        <label for="category">Collection/Category</label>
+      </div>
+      <div class="input-field col s3">
+        <button id= "signupSubmit" class="cyan waves-effect waves-light btn" type="submit"><i class="material-icons right">call_made</i>Create!</button>
+      </div>
+    </div>
+  </fieldset>
+</form>
+
+<form class="col s6" action="/card/category" method="POST">
+  <fieldset>
+    <legend>View a Collection of Cards</legend>
+    <div class="input-field col s12">
+    <select>
+      <option value="" disabled selected>Choose your collection</option>
+      <option value="{{category}}">{{category}}</option>
+    </select>
+    <label>Card Categories</label>
+  </div>
+  </fieldset>
+</form>
+
+<div class="card">
+  <div class="card-image waves-effect waves-block waves-light sticky-action">
+    <!-- <img class="activator" src="images/office.jpg"> -->
+  </div>
+  <div class="card-content">
+    <span class="card-title activator grey-text text-darken-4">{{category}}<i class="material-icons right">more_vert</i></span>
+    <p>{{question}}</p>
+  </div>
+  <div class="card-reveal">
+    <span class="card-title grey-text text-darken-4">Card Title<i class="material-icons right">close</i></span>
+    <p>{{answer}}</p>
+  </div>
+</div>
+
+
+{{/data}}

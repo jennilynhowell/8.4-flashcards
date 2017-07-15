@@ -2,6 +2,24 @@ const User = require('../models/user');
 const createPasswordObject = require('./helpers').createPasswordObject;
 
 module.exports = {
+  getPages: {
+    getIndex: (req, res) => {
+      res.render('index', {});
+    },
+
+    getLogin: (req, res) => {
+      res.render('login', {});
+    },
+
+    getCollections: (req, res) => {
+      let data = {
+        username: req.session.name,
+        userId: req.session._id
+      }
+      res.render('collections', data)
+    }
+  },
+
   viewUsers: (req, res) => {
     User.find().then(users => {
       if (users.err){
@@ -69,7 +87,9 @@ module.exports = {
         if (!user || pwObject.hash !== newPwObject.hash){
           res.render('login', {message: 'Login error, please try again.'});
         } else if (user && pwObject.hash === newPwObject.hash ){
-          res.render('collections', {data: user});
+          req.session.user = user._id;
+          req.session.name = user.username;
+          res.redirect('collections');
         };
       });
     }

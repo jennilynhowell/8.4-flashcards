@@ -3,11 +3,12 @@ const Card = require('../models/card');
 module.exports = {
 
   createCard: (req, res) => {
+    let userId = req.session.name;
     let myCard = new Card(req.body).save().then(card => {
       if (card.err){
-        res.status(500).json({message: 'Error'});
+        res.render('collections', {message: 'Error'});
       } else {
-        res.status(201).json({message: 'Success', data: card});
+        res.redirect('collections');
       };
     });
   },
@@ -37,9 +38,9 @@ module.exports = {
     let category = req.body.category;
     Card.find({category: category}).then(cards => {
       if (cards.err){
-        res.status(500).json({message: 'Error'});
+        res.render('collections', {message: 'Error'});
       } else {
-        res.status(200).json({message: 'Success', data: cards});
+        res.render('collections', {data: cards});
       };
     });
   },
