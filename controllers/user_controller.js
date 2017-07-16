@@ -19,10 +19,28 @@ module.exports = {
       };
 
       Card.find({userId: userSession.userId}).then(cards => {
-        res.render('collections', {cards: cards, userSession: userSession});
-      });
+        let categories = []
+          , counter = 0;
 
+        for (let i = 0; i < cards.length; i++) {
+          counter ++;
+          counter = counter - 1;
+
+          if (cards[i].category !== categories[counter]) {
+            categories.push(cards[i].category);
+          };
+        };
+
+        let context = {
+          userSession: userSession,
+          cards: cards,
+          categories: categories
+        };
+
+        res.render('collections', context);
+      });
     }
+
   },
 
   viewUsers: (req, res) => {
@@ -62,8 +80,8 @@ module.exports = {
         if (user.err){
           res.render('index', {message: 'Error'});
         } else {
-          res.session.user = user._id;
-          res.session.name = user.username;
+          req.session.user = user._id;
+          req.session.name = user.username;
           res.render('collections', {data: user});
         };
       });
@@ -94,13 +112,21 @@ module.exports = {
         } else if (user && pwObject.hash === newPwObject.hash ){
           req.session.user = user._id;
           req.session.name = user.username;
+
+          Card.find({userId: req.session.user}).then(cards => {
+            for (let i = 0; i < cards.length; i++) {
+              cards[i].showCard = false;
+              cards[i].showAnswer = false;
+              cards[i].save();
+            };
+          })
           res.redirect('/user/collections');
         };
       });
     }
-
-
   }
+
+
 
 
 

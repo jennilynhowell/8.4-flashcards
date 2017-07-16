@@ -54,10 +54,14 @@ app.post('/user/signup', userControl.createUser);
 app.post('/user/login', userControl.login);
 
 //==========flashcard controllers
-app.get('/card', cardControl.viewCards);
+app.get('/api/card', cardControl.viewCards);
+app.patch('api/card/:id', cardControl.patchCard);
+
 
   //all these should be a form submit
-app.get('/card/category', cardControl.viewCardsByCategory);
+app.post('/card/category', cardControl.viewCardsByCategory);
+
+app.post('/card/answer', cardControl.viewAnswer);
 
 app.get('/card/:id', cardControl.viewOneCard);
 

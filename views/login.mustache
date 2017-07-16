@@ -1,29 +1,11 @@
-<div class="row">
-  <form class="col s6 signupForm" action="/user/login" method="POST">
-    <fieldset>
-      <legend>Sign In to my Flashcards</legend>
-
-      {{#valErrors}}
-      <h5>{{.}}</h5>
-      {{/valErrors}}
-
-      {{#message}}
-      <h5>{{.}}</h5>
-      {{/message}}
-
-      <div class="row">
-        <div class="input-field col s12">
-          <input id="username" type="text" class="validate" name="username" required>
-          <label for="username">Username</label>
-        </div>
-        <div class="input-field col s12">
-          <input id="password" type="password" class="validate" name="password" required>
-          <label for="password">Password</label>
-        </div>
-        <div class="input-field col s12">
-          <button id= "signupSubmit" class="cyan waves-effect waves-light btn" type="submit"><i class="material-icons right">call_made</i>Go!</button>
-        </div>
-      </div>
-    </fieldset>
+<section class="container form-div">
+  <h3>Welcome back to Popquiz!</h3>
+  {{#message}}<p class="bg-warning">{{message}}</p>
+  {{/message}}
+  <form class="form-group" action="/user/login" method="POST">
+    <input class="form-control" type="text" name="username" value="" placeholder="Username">
+    <input class="form-control" type="password" name="password" value="" placeholder="Password">
+    <input class="form-control btn btn-primary" type="submit" name="signup" value="Log In!">
   </form>
-</div>
+  <h5>Oops, I'm not a Popquizzer yet. Take me to the <a href="/user/signup">Sign Up page!</a></h5>
+</section>

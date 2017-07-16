@@ -34,13 +34,16 @@ module.exports = {
   },
 
   viewCardsByCategory: (req, res) => {
-    let category = req.body.category;
-    Card.find({category: category}).then(cards => {
-      if (cards.err){
-        res.render('collections', {message: 'Error'});
-      } else {
-        res.render('collections', {data: cards});
-      };
+    let category = req.body.category
+      , userId = req.body.userId;
+    Card.find({$and: [{userId: userId}, {category: category}]}).then(cards => {
+      cards.forEach(card => {
+        card.showCard = true;
+        card.save();
+        console.log(card, ' (after)');
+      });
+
+      res.redirect('/user/collections');
     });
   },
 
@@ -51,8 +54,11 @@ module.exports = {
       , category = req.body.category;
 
     Card.findOneAndUpdate({_id: _id}, {
-      question: question,
-      answer: answer,
+      cardArray: {
+        question: question,
+        answer: answer,
+        response: [true, Date.now()]
+      },
       category: category
     }).then((error, card) => {
       if (error){
@@ -72,6 +78,15 @@ module.exports = {
         res.status(200).json({message: 'Success', data: card});
       };
     })
+  },
+
+  viewAnswer: (req, res) => {
+    let _id = req.body._id;
+    Card.findOneAndUpdate({_id: _id}, {$set: {showAnswer: true}}).then(card =>{
+      console.log(card);
+      console.log('ANSWER SHOULD BE VISIBLE');
+      res.redirect('/user/collections');
+    });
   }
 
 //end exports

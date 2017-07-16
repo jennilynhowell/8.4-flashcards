@@ -1,34 +1,13 @@
+<section class="container form-div">
+  <h3>Sign up for Popquiz!</h3>
+  {{#message}}<p class="bg-warning">{{message}}</p>
+  {{/message}}
 
-  <div class="row">
-    <form class="col s6 signupForm" action="/user" method="POST">
-      <fieldset>
-        <legend>Sign Up for Flashcards</legend>
-
-        {{#valErrors}}
-          <h5>{{.}}</h5>
-        {{/valErrors}}
-
-        {{#message}}
-        <h5>{{.}}</h5>
-        {{/message}}
-
-        <div class="row">
-          <div class="input-field col s12">
-            <input id="username" type="text" class="validate" name="username" required>
-            <label for="username">Username</label>
-          </div>
-          <div class="input-field col s6">
-            <input id="password" type="password" class="validate" name="password" required>
-            <label for="password">Password</label>
-          </div>
-          <div class="input-field col s6">
-            <input id="passwordConf" type="password" class="validate" name="passwordConf" required>
-            <label for="passwordConf">Confirm Password</label>
-          </div>
-          <div class="input-field col s12">
-            <button id= "signupSubmit" class="cyan waves-effect waves-light btn" type="submit"><i class="material-icons right">call_made</i>Sign Me Up!</button>
-          </div>
-        </div>
-      </fieldset>
-    </form>
-  </div>
+  <form class="form-group" action="/user/signup" method="POST">
+    <input class="form-control" type="text" name="username" value="{{username}}" placeholder="Username">
+    <input class="form-control" type="password" name="password" value="{{password}}" placeholder="Password">
+    <input class="form-control" type="password" name="passconf" value="" placeholder="Confirm Password">
+    <input class="form-control btn btn-primary" type="submit" name="signup" value="Sign up!">
+  </form>
+  <h5>I'm already a Popquizzer. Take me to the <a href="/user/login">Log In page!</a></h5>
+</section>

@@ -2,27 +2,29 @@
 <html>
   <head>
     <meta charset="utf-8">
-    <title>Flashcards</title>
-    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.99.0/css/materialize.min.css">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <meta lang="en">
+    <title>Popquiz</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <link rel="stylesheet" href="/static/styles.css">
   </head>
-  <body>
 
-    <nav>
-      <div class="nav-wrapper cyan lighten-2">
-        <a href="#" class="brand-logo"><i class="material-icons">dashboard</i>Flashcards</a>
-        <ul id="nav-mobile" class="right hide-on-med-and-down">
-          <li><a href="/user/login">Login</a></li>
-          <li><a href="/card">View my Collections</a></li>
+  <body class="container">
+    <header class="navbar navbar-default navbar-fixed-top">
+      <nav>
+        <ul class="list-inline list-unstyled">
+          <li class="navbar-brand"><span class="glyphicon glyphicon glyphicon-ice-lolly-tasted"></span><b class="popquiz">popquiz</b></li>
+          {{#user}}
+          <li class="logout navbar-right">Logged in as {{user}} <a href="/logout">Log Out</a></li>
+          {{/user}}
+
+          {{^user}}
+          <li class="logout navbar-right"><a href="/user/login">Log In</a></li>
+          {{/user}}
+          <li></li>
         </ul>
-      </div>
-    </nav>
-{{{yield}}}
-    <script type="text/javascript" src="https://code.jquery.com/jquery-2.1.1.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.99.0/js/materialize.min.js"></script>
-
+      </nav>
+    </header>
   </body>
 
-
+  {{{yield}}}
 </html>
