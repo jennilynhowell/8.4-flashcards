@@ -16,39 +16,6 @@
     <input class="form-control btn btn-primary" type="submit" name="submit" value="Start quiz!">
   </form>
 
-{{#cards}}
-{{#showCard}}
-  <div class="container">
-    <ul class="list-unstyled">
-      <li><h3>Question: {{question}}</h3></li>
-      {{#answer}}
-      <li><h4>Answer: {{answer}}</h4></li>
-      {{/answer}}
-      <li><form class="form-inline" action="/card/answer" method="post">
-        <input type="hidden" name="id" value="{{_id}}">
-        <input type="submit" name="like" value="View Answer" class="form-control btn btn-primary">
-      </form></li>
 
-      <li><form class="form-inline" action="MARK RESPONSE" method="post">
-        <input type="hidden" name="book" value="{{_id}}">
-          <label for="completed" class="form-control compl-label"> Mark Completed?
-            yes<input type="checkbox" name="completed" value="true" class="">
-          </label>
-        <input type="submit" name="response" value="Submit Response" class="form-control btn btn-primary">
-      </form></li>
-
-      <li><form class="form-inline" action="DELETE CARD" method="post">
-        <input type="hidden" name="id" value="{{_id}}">
-        <input type="submit" name="delete" value="Delete Card" class="form-control btn btn-primary">
-      </form></li>
-
-      <li><form class="form-inline" action="EDIT CARD" method="post">
-        <input type="hidden" name="id" value="{{_id}}">
-        <input type="submit" name="view" value="Edit Card" class="form-control btn btn-primary like-btn">
-      </form></li>
-    </ul>
-  </div>
-  {{/showCard}}
-  {{/cards}}
-
+</section>
 </section>

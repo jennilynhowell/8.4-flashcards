@@ -39,6 +39,30 @@ module.exports = {
 
         res.render('collections', context);
       });
+    },
+
+    quiz: (req, res) => {
+      let category = req.params.category
+        , userId = req.body.userId
+        , userSession = {
+          username: req.session.name,
+          userId: req.session.user
+        };
+
+      Card.find({$and: [{userId: userSession.userId}, {category: category}]}).then(cards => {
+        cards.forEach(card => {
+          card.showCard = true;
+          card.save();
+        });
+
+        let context = {
+          userSession: userSession,
+          category: category,
+          cards: cards
+        };
+
+        res.render('quiz', context);
+      });
     }
 
   },

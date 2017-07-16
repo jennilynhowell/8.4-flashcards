@@ -5,13 +5,11 @@ const cardSchema = new mongoose.Schema({
   category: String,
   showCard: {type: Boolean, default: false},
   showAnswer: {type: Boolean, default: false},
-  cardArray: [{
-    question: String,
-    answer: String,
-    response: [{
-      date: {type: Date, default: Date.now()},
-      correct: Boolean
-    }]
+  question: String,
+  answer: String,
+  guesses: [{
+    date: {type: Date, default: Date.now()},
+    correct: Boolean
   }]
 
 });

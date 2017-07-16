@@ -13,13 +13,10 @@ module.exports = {
   },
 
   deleteCard: (req, res) => {
-    let _id = req.params.id;
-    Card.remove({_id: _id}).then(card => {
-      if (card.err){
-        res.status(500).json({message: 'Error'});
-      } else {
-        res.status(200).json({message: 'Success'});
-      };
+    let _id = req.params.id
+      , category = req.body.category;
+    Card.findOneAndRemove({_id: _id}).then(() => {
+      res.redirect('/user/quiz/' + category)
     });
   },
 
@@ -40,32 +37,24 @@ module.exports = {
       cards.forEach(card => {
         card.showCard = true;
         card.save();
-        console.log(card, ' (after)');
       });
-
-      res.redirect('/user/collections');
+      res.redirect('/user/quiz/' + category);
     });
   },
 
   patchCard: (req, res) => {
-    let _id = req.params._id
+    let _id = req.params.id
       , question = req.body.question
       , answer = req.body.answer
-      , category = req.body.category;
+      , currentCategory = req.body.category
+      , newCategory = req.body.newCategory;
 
     Card.findOneAndUpdate({_id: _id}, {
-      cardArray: {
-        question: question,
-        answer: answer,
-        response: [true, Date.now()]
-      },
-      category: category
-    }).then((error, card) => {
-      if (error){
-        res.status(500).json({message: 'Error'});
-      } else {
-        res.status(200).json({message: 'Success', data: card});
-      };
+      question: question,
+      answer: answer,
+      category: newCategory
+    }).then(() => {
+      res.redirect('/user/quiz/' + currentCategory);
     });
   },
 
@@ -81,11 +70,28 @@ module.exports = {
   },
 
   viewAnswer: (req, res) => {
-    let _id = req.body._id;
-    Card.findOneAndUpdate({_id: _id}, {$set: {showAnswer: true}}).then(card =>{
-      console.log(card);
-      console.log('ANSWER SHOULD BE VISIBLE');
-      res.redirect('/user/collections');
+    let _id = req.body.id
+      , category = req.body.category;
+    console.log(req.body.id);
+    Card.findById(_id).then(card =>{
+      card.showAnswer = true;
+      card.save();
+
+      res.redirect('/user/quiz/' + category);
+    });
+  },
+
+  logGuess: (req, res) => {
+    let _id = req.body.id
+      , category = req.body.category
+      , correct = req.body.correct;
+    Card.findById(_id).then(card =>{
+      card.guesses.push({
+        date: Date.now(),
+        correct: correct
+      })
+      card.save();
+      res.redirect('/user/quiz/' + category);
     });
   }
 
