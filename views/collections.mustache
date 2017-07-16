@@ -6,6 +6,7 @@
 
 
   <form class="form-group form-inline" action="/card/category" method="post">
+    <h3>Start a New Quiz</h3>
     <input type="hidden" name="userId" value="{{userSession.userId}}">
     <select class="category form-control" name="category">
       <option value="">Select a Category</option>
@@ -14,6 +15,43 @@
       {{/categories}}
     </select>
     <input class="form-control btn btn-primary" type="submit" name="submit" value="Start quiz!">
+  </form>
+
+  {{#userSession.welcome}}
+  <h4 class="bg-success">{{.}}</h4>
+  {{/usersession.welcome}}
+
+  <form class="form-group" action="/card" method="post">
+    <h3>Create New Cards</h3>
+    <div class="form-group">
+      <input type="hidden" name="userId" value="{{userSession.userId}}">
+      <label for="newCategory">Category for these Cards</label>
+      <input type="text" name="newCategory" value="" placeholder="Category" class="form-control">
+    </div>
+
+    <div class="form-group">
+      <label for="">First Card</label>
+      <input type="text" name="question1" value="" placeholder="Question" class="form-control">
+      <input type="text" name="answer1" value="" placeholder="Answer" class="form-control">
+    </div>
+
+    <div class="form-group">
+      <label for="">Second Card</label>
+      <input type="text" name="question2" value="" placeholder="Question" class="form-control">
+      <input type="text" name="answer2" value="" placeholder="Answer" class="form-control">
+    </div>
+
+    <div class="form-group">
+      <label for="">Third Card</label>
+      <input type="text" name="question3" value="" placeholder="Question" class="form-control">
+      <input type="text" name="answer3" value="" placeholder="Answer" class="form-control">
+    </div>
+
+    <div class="form-group">
+      <input type="submit" name="view" value="Create!" class="form-control btn btn-primary like-btn">
+    </div>
+
+
   </form>
 
 

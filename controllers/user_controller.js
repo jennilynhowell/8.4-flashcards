@@ -19,17 +19,16 @@ module.exports = {
       };
 
       Card.find({userId: userSession.userId}).then(cards => {
-        let categories = []
+        let holding = []
           , counter = 0;
 
-        for (let i = 0; i < cards.length; i++) {
-          counter ++;
-          counter = counter - 1;
+        //Info about SET at MDN &&: https://stackoverflow.com/questions/1960473/unique-values-in-an-array
 
-          if (cards[i].category !== categories[counter]) {
-            categories.push(cards[i].category);
-          };
+        for (let i = 0; i < cards.length; i++) {
+          holding.push(cards[i].category);
         };
+
+        let categories = Array.from(new Set(holding));
 
         let context = {
           userSession: userSession,
@@ -93,6 +92,7 @@ module.exports = {
     } else {
       let username = req.body.username
         , password = req.body.password
+        , passwordConf = req.body.passwordConf
         , passwordObj = createPasswordObject(password);
 
       let newUser = new User({
@@ -106,7 +106,13 @@ module.exports = {
         } else {
           req.session.user = user._id;
           req.session.name = user.username;
-          res.render('collections', {data: user});
+          let userSession = {
+            userId: req.session.user,
+            username: req.session.name,
+            welcome: 'Hey there, and welcome to Popquiz! Start by making a few cards!'
+          };
+          console.log(userSession);
+          res.render('collections', {userSession: userSession});
         };
       });
     };
@@ -148,6 +154,12 @@ module.exports = {
         };
       });
     }
+  },
+
+  logout: (req, res) => {
+    delete req.session.user;
+    delete req.session.name;
+    res.redirect('/user/login');
   }
 
 

@@ -9,6 +9,7 @@ const cardSchema = new mongoose.Schema({
   answer: String,
   guesses: [{
     date: {type: Date, default: Date.now()},
+    displayDate: String,
     correct: Boolean
   }]
 

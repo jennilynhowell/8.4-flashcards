@@ -1,14 +1,41 @@
 const Card = require('../models/card');
 
+
 module.exports = {
 
   createCard: (req, res) => {
-    let myCard = new Card(req.body).save().then(card => {
-      if (card.err){
-        res.render('collections', {message: 'Error'});
-      } else {
-        res.redirect('/user/collections');
-      };
+    let question1 = req.body.question1
+      , question2 = req.body.question2
+      , question3 = req.body.question3
+      , answer1 = req.body.answer1
+      , answer2 = req.body.answer2
+      , answer3 = req.body.answer3
+      , newCategory = req.body.newCategory
+      , userId = req.body.userId;
+
+    let newCard1 = new Card({
+      userId: userId,
+      category: newCategory,
+      question: question1,
+      answer: answer1
+    });
+
+    let newCard2 = new Card({
+      userId: userId,
+      category: newCategory,
+      question: question2,
+      answer: answer2
+    });
+
+    let newCard3 = new Card({
+      userId: userId,
+      category: newCategory,
+      question: question3,
+      answer: answer3
+    });
+
+    Card.insertMany([newCard1, newCard2, newCard3]).then(() => {
+      res.redirect('/user/collections');
     });
   },
 
@@ -43,7 +70,7 @@ module.exports = {
   },
 
   patchCard: (req, res) => {
-    let _id = req.params.id
+    let _id = req.body.id
       , question = req.body.question
       , answer = req.body.answer
       , currentCategory = req.body.category
@@ -72,7 +99,6 @@ module.exports = {
   viewAnswer: (req, res) => {
     let _id = req.body.id
       , category = req.body.category;
-    console.log(req.body.id);
     Card.findById(_id).then(card =>{
       card.showAnswer = true;
       card.save();
@@ -84,11 +110,12 @@ module.exports = {
   logGuess: (req, res) => {
     let _id = req.body.id
       , category = req.body.category
-      , correct = req.body.correct;
+      , correct = req.body.correct
+      , guessDate = Date.now();
     Card.findById(_id).then(card =>{
       card.guesses.push({
-        date: Date.now(),
-        correct: correct
+        date: guessDate,
+        correct: correct,
       })
       card.save();
       res.redirect('/user/quiz/' + category);

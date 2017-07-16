@@ -46,35 +46,25 @@ app.get('/user/signup', userControl.getPages.getIndex);
 app.get('/user/login', userControl.getPages.getLogin);
 app.get('/user/collections', userControl.getPages.getCollections);
 app.get('/user/quiz/:category', userControl.getPages.quiz);
+app.get('/logout', userControl.logout);
 
-//==========user controllers
-app.get('/api/user', userControl.viewUsers);
-
+//==========user routes
 app.post('/user/signup', userControl.createUser);
-
 app.post('/user/login', userControl.login);
 
-//==========a couple api controllers
+//==========a couple api routes
+app.get('/api/user', userControl.viewUsers);
 app.get('/api/card', cardControl.viewCards);
 app.patch('api/card/:id', cardControl.patchCard);
 
 
-  //all these should be a form submit
-
+//==========card routes
 app.post('/card/category', cardControl.viewCardsByCategory);
-
 app.post('/card/answer', cardControl.viewAnswer);
-
 app.post('/card/guess', cardControl.logGuess);
-// 
-// app.get('/card/:id', cardControl.viewOneCard);
-
 app.post('/card', cardControl.createCard);
-
 app.post('/card/update', cardControl.patchCard);
-
 app.post('/card/delete', cardControl.deleteCard);
-
 
 module.exports = app;
 

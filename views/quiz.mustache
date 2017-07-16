@@ -13,35 +13,35 @@
         <li><h3>Question: {{question}}</h3></li>
         {{#showAnswer}}
         <li><h4>Answer: {{answer}}</h4></li>
+
+        <li><form class="form-inline" action="/card/guess" method="post">
+          <input type="hidden" name="id" value="{{_id}}">
+          <input type="hidden" name="category" value="{{category}}">
+            <label for="completed" class="form-control compl-label"> Successful guess?
+              yes<input type="checkbox" name="correct" value="true" class="">
+              no<input type="checkbox" name="correct" value="false" class="">
+            </label>
+          <input type="submit" name="response" value="Submit Response" class="form-control btn btn-primary">
+        </form></li>
         {{/showAnswer}}
+
+        {{^showAnswer}}
         <li><form class="form-inline" action="/card/answer" method="post">
           <input type="hidden" name="id" value="{{_id}}">
           <input type="hidden" name="category" value="{{category}}">
           <input type="submit" name="showAnswer" value="View Answer" class="form-control btn btn-primary">
         </form></li>
+        {{/showAnswer}}
 
-        <li><form class="form-inline" action="/card/guess" method="post">
-          <input type="hidden" name="id" value="{{_id}}">
-          <input type="hidden" name="category" value="{{category}}">
-            <label for="completed" class="form-control compl-label"> Mark your guess?
-              correct<input type="checkbox" name="correct" value="true" class="">
-              incorrect<input type="checkbox" name="correct" value="false" class="">
-            </label>
-          <input type="submit" name="response" value="Submit Response" class="form-control btn btn-primary">
-        </form></li>
 
-        {{#guesses}}
-        <p>Your recent guesses:</p>
-        <ul>
-          <li>{{date}}: {{correct}}</li>
-        </ul>
-        {{/guesses}}
-
-        <li><form class="form-inline" action="/card/delete" method="post">
-          <input type="hidden" name="id" value="{{_id}}">
-          <input type="hidden" name="category" value="{{category}}">
-          <input type="submit" name="delete" value="Delete Card" class="form-control btn btn-primary">
-        </form></li>
+        <li class="panel panel-default">
+          <p class="panel-title">Your recent guesses:</p>
+          <ul class="panel-body">
+          {{#guesses}}
+            <li>{{correct}} ({{date}})</li>
+          {{/guesses}}
+          </ul>
+        </li>
 
         <li><form class="form-inline" action="/card/update" method="post">
           <input type="hidden" name="id" value="{{_id}}">
@@ -51,6 +51,14 @@
           <input type="text" name="newCategory" value="" placeholder="Category" class="form-control">
           <input type="submit" name="view" value="Edit Card" class="form-control btn btn-primary like-btn">
         </form></li>
+
+        <li><form class="form-inline" action="/card/delete" method="post">
+          <input type="hidden" name="id" value="{{_id}}">
+          <input type="hidden" name="category" value="{{category}}">
+          <input type="submit" name="delete" value="Delete Card" class="form-control btn btn-primary">
+        </form></li>
+
+
       </ul>
     </div>
     {{/showCard}}

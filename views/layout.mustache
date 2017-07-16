@@ -13,13 +13,13 @@
       <nav>
         <ul class="list-inline list-unstyled">
           <li class="navbar-brand"><span class="glyphicon glyphicon glyphicon-ice-lolly-tasted"></span><b class="popquiz">popquiz</b></li>
-          {{#user}}
-          <li class="logout navbar-right">Logged in as {{user}} <a href="/logout">Log Out</a></li>
-          {{/user}}
+          {{#userSession}}
+          <li class="logout navbar-right">Logged in as {{username}} | <a href="/user/collections">Home | </a> <a href="/logout">Log Out</a></li>
+          {{/userSession}}
 
-          {{^user}}
+          {{^userSession}}
           <li class="logout navbar-right"><a href="/user/login">Log In</a></li>
-          {{/user}}
+          {{/userSession}}
           <li></li>
         </ul>
       </nav>
