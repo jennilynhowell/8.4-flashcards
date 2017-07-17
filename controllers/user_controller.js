@@ -109,9 +109,8 @@ module.exports = {
           let userSession = {
             userId: req.session.user,
             username: req.session.name,
-            welcome: 'Hey there, and welcome to Popquiz! Start by making a few cards!'
+            welcome: 'Hey there, and welcome to Popquiz! Start here by making a few cards.'
           };
-          console.log(userSession);
           res.render('collections', {userSession: userSession});
         };
       });

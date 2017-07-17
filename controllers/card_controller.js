@@ -11,7 +11,8 @@ module.exports = {
       , answer2 = req.body.answer2
       , answer3 = req.body.answer3
       , newCategory = req.body.newCategory
-      , userId = req.body.userId;
+      , userId = req.body.userId
+      , insert = [];
 
     let newCard1 = new Card({
       userId: userId,
@@ -34,7 +35,18 @@ module.exports = {
       answer: answer3
     });
 
-    Card.insertMany([newCard1, newCard2, newCard3]).then(() => {
+    if (!newCard2 && !newCard3) {
+      insert.push(newCard1);
+    } else if (newCard1 && newCard2 && !newCard3) {
+      insert.push(newCard1);
+      insert.push(newCard2);
+    } else {
+      insert.push(newCard1);
+    };
+
+    console.log(insert);
+
+    Card.insertMany(insert).then(() => {
       res.redirect('/user/collections');
     });
   },

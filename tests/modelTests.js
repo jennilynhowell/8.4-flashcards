@@ -20,45 +20,35 @@ describe('card model endpoint tests', () => {
     Card.deleteMany({}).then(() => {done()});
   });
 
-  it('can GET one card at /card/:id', (done) => {
-    let myCard = new Card({userId: "54cd6669d3e0fb1b302e54e6", question: 'Cutest puppy?', answer: 'Luke', category: 'Dogs'}).save().then(card => {
-      request(app)
-        .get('/card/' + card._id)
-        .expect(200)
-        .expect(res => {
-          expect(res.body.data.answer).to.equal('Luke');
-        }).end(done);
-      });
-  });
-
   //can't get card data to pass through promise??
-  it('can PATCH a card at /card/:id', (done) => {
+  it('can POST a card update at /card/update', (done) => {
     let myCard = new Card({userId: "54cd6669d3e0fb1b302e54e6", question: 'Cutest puppy?', answer: 'Luke', category: 'Dogs'}).save().then(card => {
       request(app)
-        .patch('/card/' + card._id)
-        .send({question: 'Best puppy?'})
-        .expect(200)
+        .post('/card/update')
+        .send({_id: myCard._id, question: 'Best puppy?', answer: 'Luke', newCategory: 'Dog facts'})
+        .expect(302)
         .expect(res => {
-          console.log(res.body);
-          expect(res.body.message).to.equal('Success');
+          Card.count().then(count => {
+            expect(count).to.equal(4)
+          });
+          //this doesn't seem to be working accurately though it works fine in production
         }).end(done);
       });
   });
 
-  it('can GET all cards by category at /card/category', (done) => {
+  it('can GET all cards by category at user/quiz/:category', (done) => {
     request(app)
-      .get('/card/category')
-      .send({category: 'Treats'})
+      .get('/user/quiz/Treats')
       .expect(200)
       .expect(res => {
-        expect(res.body.data[0].category).to.equal('Treats');
-        expect(res.body.data[1].question).to.equal('Best doughnut shop?');
-      }).end(done);
+        //again not sure how to check the response?
+      })
+      .end(done);
   });
 
-  it('can GET all cards at /card', (done) => {
+  it('can GET all cards at /api/card', (done) => {
     request(app)
-      .get('/card')
+      .get('/api/card')
       .expect(200)
       .expect(res => {
         expect(res.body.data[2].answer).to.equal('TRUE!');
@@ -66,28 +56,17 @@ describe('card model endpoint tests', () => {
       }).end(done);
   });
 
-  it('can DELETE a card at /card/:id/delete', (done) => {
-    let myCard = new Card({userId: "54cd6669d3e0fb1b302e54e6", question: 'Cutest puppy?', answer: 'Luke', category: 'Dogs'}).save().then(card => {
-      request(app)
-        .delete('/card/' + card._id + '/delete')
-        .expect(200)
-        .expect(res => {
-          expect(res.body.message).to.equal('Success');
-        }).end(done);
-    });
-
-  });
 
   it('can create card at POST /card', (done) => {
     request(app)
       .post('/card')
-      .send({userId: "54cd6669d3e0fb1b302e54e6", question: 'Cutest puppy?', answer: 'Luke', category: 'Dogs'})
+      .send({userId: "54cd6669d3e0fb1b302e54e6", question1: 'Cutest puppy?', answer1: 'Luke', newCategory: 'Dogs'})
       .expect(res => {
-        expect(201);
-        expect(res.body.message).to.equal('Success');
-        expect(res.body.data.answer).to.equal('Luke');
+        Card.count().then(count => {
+          expect(count).to.equal(4);
+        });
       }).end(done);
-    });
+  });
 
 });
 
@@ -112,9 +91,11 @@ describe('user model endpoint tests', () => {
       request(app)
         .post('/user/login')
         .send({username: username, password: password})
-        .expect(200)
+        .expect(302)
         .expect(res => {
-          expect(res.body.data.username).to.equal('bunnies');
+          User.count().then(count => {
+            expect(count).to.equal(1);
+          });
         }).end(done);
     });
   });
@@ -128,14 +109,15 @@ describe('user model endpoint tests', () => {
     done();
   });
 
-  it('can POST a new user with pw object at /user', (done) => {
+  it('can POST a new user with pw object at /user/signup', (done) => {
     request(app)
-      .post('/user')
+      .post('/user/signup')
       .send({username: 'luke', password: 'puppy', passwordConf: 'puppy'})
       .expect(200)
       .expect(res => {
-        expect(res.body.data.username).to.equal('luke');
-        expect(res.body.data.password.hash.length).to.equal(344);
+        User.count().then(count => {
+          expect(count).to.equal(1);
+        });
       }).end(done);
 
   });
