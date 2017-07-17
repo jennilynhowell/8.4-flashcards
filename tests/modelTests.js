@@ -109,9 +109,9 @@ describe('user model endpoint tests', () => {
     done();
   });
 
-  it('can POST a new user with pw object at /user/signup', (done) => {
+  it('can POST a new user with pw object at /user/login/signup', (done) => {
     request(app)
-      .post('/user/signup')
+      .post('/user/login/signup')
       .send({username: 'luke', password: 'puppy', passwordConf: 'puppy'})
       .expect(200)
       .expect(res => {

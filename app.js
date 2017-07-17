@@ -8,6 +8,7 @@ const path = require('path');
 const validator = require('express-validator');
 const mustache = require('mustache-express');
 const session = require('express-session');
+const parseurl = require('parseurl');
 
 
 const userControl = require('./controllers/user_controller.js');
@@ -36,13 +37,25 @@ app.use(session({
   saveUninitialized: true
 }));
 
+//require user to be logged in
+app.use(function(req, res, next){
+  let pathname = parseurl(req).pathname
+    , sess = req.session;
+
+  if (!sess.user && (!pathname.includes('/user/login'))){
+    res.redirect('/user/login');
+  } else {
+    next();
+  }
+
+});
 
 app.get('/', (req, res) => {
   res.redirect('/user/signup')
 });
 
 //fetch some pages
-app.get('/user/signup', userControl.getPages.getIndex);
+app.get('/user/login/signup', userControl.getPages.getIndex);
 app.get('/user/login', userControl.getPages.getLogin);
 app.get('/user/collections', userControl.getPages.getCollections);
 app.get('/user/quiz/:category', userControl.getPages.quiz);
